@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<template id="__bundler_thumbnail">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#0e0e0d"/><g fill="none" stroke="#c9a227" stroke-width="5" stroke-linejoin="round"><path d="M60 78l40-26 40 26v62H60z"/></g><circle cx="100" cy="112" r="7" fill="#c9a227"/></svg>
+</template>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Barlow+Condensed:wght@300;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; background: #0a0a0a; overscroll-behavior: none; }
+  * { -webkit-tap-highlight-color: transparent; }
+  a { color: #b08b5e; }
+  a:hover { color: #d8b98d; }
+  @keyframes hintPulse { 0%, 100% { opacity: .4; } 50% { opacity: .9; } }
+</style>
+</helmet>
+<div ref="{{ fitRef }}" style="position: relative; width: 100%; height: 100dvh; background: #0a0a0a; overflow: hidden; font-family: 'Noto Sans KR', sans-serif;">
+  <div ref="{{ stageRef }}" style="position: absolute; left: 50%; top: 50%; width: 1085.3px; height: 1904.3px; overflow: hidden; background: #e8e6e2; transform: translate(-50%, -50%); transform-origin: 50% 50%;">
+
+    <x-import component-from-global-scope="pano-view" from="./pano-view.js" hint-size="100%,100%" dc-props="{{ panoProps }}"></x-import>
+
+
+    <!-- 평면 / 아이소 -->
+    <sc-if value="{{ planOn }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; inset: 0; z-index: 12; background: #1a1a19; display: flex; align-items: center; justify-content: center; padding: 150px 170px;">
+        <img src="assets/plan-84c.png" alt="평면도" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;" />
+      </div>
+    </sc-if>
+    <sc-if value="{{ isoOn }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; inset: 0; z-index: 12; background: #1a1a19; display: flex; align-items: center; justify-content: center; padding: 150px 170px;">
+        <img src="assets/iso-84.jpg" alt="입체 평면" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;" />
+      </div>
+    </sc-if>
+    <sc-if value="{{ dpOn }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; inset: 0; z-index: 11; pointer-events: none; background: linear-gradient(160deg, rgba(176,139,94,.18) 0%, rgba(176,139,94,.04) 55%, rgba(10,10,10,0) 100%);"></div>
+    </sc-if>
+
+    <!-- ── 상단: 타입 · 공간 · 이동 ────────────────────────── -->
+    <div style="position: absolute; left: 0; right: 0; top: 84px; z-index: 25; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+      <div style="display: flex; align-items: center; gap: 26px;">
+        <button type="button" onClick="{{ onPrev }}" title="이전 공간" style="flex: none; display: flex; align-items: center; justify-content: center; width: 112px; height: 112px; border: 1px solid rgba(255,255,255,.18); border-radius: 50%; background: rgba(14,14,13,.82); color: #fff; font-family: 'Noto Sans KR', sans-serif; font-size: 42px; font-weight: 300; line-height: 1; cursor: pointer; box-shadow: 0 16px 48px rgba(0,0,0,.5);" style-active="background: rgba(255,255,255,.24);">←</button>
+      <div style="display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 999px; background: rgba(14,14,13,.82); border: 1px solid rgba(255,255,255,.18); box-shadow: 0 16px 48px rgba(0,0,0,.55);">
+        <button type="button" onClick="{{ onToggleType }}" style="flex: none; display: flex; align-items: center; gap: 16px; padding: 22px 30px; border: 0; border-radius: 999px; background: {{ typeBtnBg }}; color: #fff; font-family: 'Noto Sans KR', sans-serif; cursor: pointer;">
+          <span style="font-size: 26px; font-weight: 400; color: rgba(255,255,255,.6);">타입</span>
+          <span style="font-size: 42px; font-weight: 500; letter-spacing: -.01em;">{{ type }}</span>
+          <span style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.16); display: flex; align-items: center; justify-content: center; font-size: 20px; line-height: 1;">▾</span>
+        </button>
+        <div style="flex: none; width: 1px; height: 56px; margin: 0 4px; background: rgba(255,255,255,.18);"></div>
+        <button type="button" onClick="{{ onToggleSpace }}" style="flex: none; display: flex; align-items: center; gap: 16px; padding: 22px 30px; border: 0; border-radius: 999px; background: {{ spaceBtnBg }}; color: #fff; font-family: 'Noto Sans KR', sans-serif; cursor: pointer;">
+          <span style="flex: none; font-size: 26px; font-weight: 400; color: rgba(255,255,255,.6);">공간</span>
+          <span style="flex: none; font-size: 42px; font-weight: 500; letter-spacing: -.01em; white-space: nowrap;">{{ space }}</span>
+          <span style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.16); display: flex; align-items: center; justify-content: center; font-size: 20px; line-height: 1;">▾</span>
+        </button>
+      </div>
+        <button type="button" onClick="{{ onNext }}" title="다음 공간" style="flex: none; display: flex; align-items: center; justify-content: center; width: 112px; height: 112px; border: 1px solid rgba(255,255,255,.18); border-radius: 50%; background: rgba(14,14,13,.82); color: #fff; font-family: 'Noto Sans KR', sans-serif; font-size: 42px; font-weight: 300; line-height: 1; cursor: pointer; box-shadow: 0 16px 48px rgba(0,0,0,.5);" style-active="background: rgba(255,255,255,.24);">→</button>
+      </div>
+      <div style="padding: 12px 26px; border-radius: 999px; background: rgba(14,14,13,.62); font-size: 25px; font-weight: 400; color: #fff; pointer-events: none;">여기서 타입 · 공간을 바꿀 수 있어요</div>
+    </div>
+
+    <!-- ── 하단 중앙: 미니맵 ──────────────────────────────── -->
+    <sc-if value="{{ tourView }}" hint-placeholder-val="{{ true }}">
+    <div style="position: absolute; left: 50%; bottom: 40px; z-index: 20; width: 620px; margin-left: -310px;">
+      <img src="assets/minimap-plan-alpha.png" alt="평면 미니맵" style="display: block; width: 100%; height: auto; opacity: .42;" />
+      <div style="position: absolute; left: {{ pinLeft }}; top: {{ pinTop }}; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%; background: {{ accent }}; border: 4px solid #fff; box-shadow: 0 2px 10px rgba(0,0,0,.5);"></div>
+    </div>
+    </sc-if>
+
+    <!-- ── 우측: 기능 (픽토그램) ───────────────────────────── -->
+    <div style="position: absolute; right: 30px; top: 700px; z-index: 22; display: flex; flex-direction: column; gap: 10px; padding: 10px; border-radius: 999px; background: rgba(14,14,13,.72); border: 1px solid rgba(255,255,255,.16); box-shadow: 0 18px 50px rgba(0,0,0,.5);">
+      <button type="button" onClick="{{ onPlan }}" title="평면" style="display: flex; align-items: center; justify-content: center; width: 108px; height: 108px; border: 1px solid {{ planBorder }}; border-radius: 50%; background: {{ planBg }}; color: {{ planColor }}; cursor: pointer;">
+        <svg width="42" height="42" viewBox="0 0 26 26" fill="none"><rect x="3" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.8" /><path d="M3 11h20M11 11v12" stroke="currentColor" stroke-width="1.8" /></svg>
+      </button>
+      <button type="button" onClick="{{ onIso }}" title="아이소" style="display: flex; align-items: center; justify-content: center; width: 108px; height: 108px; border: 1px solid {{ isoBorder }}; border-radius: 50%; background: {{ isoBg }}; color: {{ isoColor }}; cursor: pointer;">
+        <svg width="42" height="42" viewBox="0 0 26 26" fill="none"><path d="M13 3l9 5v10l-9 5-9-5V8l9-5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /><path d="M13 13l9-5M13 13v10M13 13L4 8" stroke="currentColor" stroke-width="1.6" /></svg>
+      </button>
+      <button type="button" onClick="{{ onDp }}" title="DP" style="display: flex; align-items: center; justify-content: center; width: 108px; height: 108px; border: 1px solid {{ dpBorder }}; border-radius: 50%; background: {{ dpBg }}; color: {{ dpColor }}; cursor: pointer;">
+        <svg width="44" height="44" viewBox="0 0 30 30" fill="none"><path d="M6 13V9.5A2.5 2.5 0 0 1 8.5 7h13A2.5 2.5 0 0 1 24 9.5V13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /><path d="M6 13a2.5 2.5 0 0 0-2.5 2.5V20h23v-4.5A2.5 2.5 0 0 0 24 13a2.5 2.5 0 0 0-2.5 2.5V17h-13v-1.5A2.5 2.5 0 0 0 6 13z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /><path d="M6 20v2.5M24 20v2.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+      </button>
+      <button type="button" onClick="{{ onAuto }}" title="자동투어" style="display: flex; align-items: center; justify-content: center; width: 108px; height: 108px; border: 1px solid {{ autoBorder }}; border-radius: 50%; background: {{ autoBg }}; color: {{ autoColor }}; cursor: pointer;">
+        <svg width="42" height="42" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="9" stroke="currentColor" stroke-width="1.8" /><path d="M11 9.5l6 3.5-6 3.5v-7z" fill="currentColor" /></svg>
+      </button>
+      <div style="height: 1px; margin: 2px 18px; background: rgba(255,255,255,.14);"></div>
+      <button type="button" onClick="{{ onHelp }}" title="조작 방법" style="display: flex; align-items: center; justify-content: center; width: 108px; height: 108px; border: 1px solid rgba(255,255,255,.16); border-radius: 50%; background: transparent; color: rgba(255,255,255,.7); font-family: 'Noto Sans KR', sans-serif; font-size: 38px; font-weight: 400; cursor: pointer;">?</button>
+    </div>
+
+    <!-- 타입 드롭다운 -->
+    <sc-if value="{{ typeOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: 56px; right: 56px; top: 268px; z-index: 30; padding: 26px; border-radius: 32px; background: rgba(14,14,13,.96); border: 1px solid rgba(255,255,255,.16); box-shadow: 0 24px 60px rgba(0,0,0,.65);">
+        <div style="font-size: 24px; font-weight: 400; letter-spacing: .1em; color: rgba(255,255,255,.5); margin-bottom: 16px;">타입 선택</div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+          <sc-for list="{{ typeCards }}" as="t" hint-placeholder-count="7">
+            <button type="button" onClick="{{ t.pick }}" style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 20px 18px; border: 1px solid {{ t.border }}; border-radius: 18px; background: {{ t.bg }}; color: #fff; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; text-align: left;">
+              <span style="font-size: 30px; font-weight: 500; letter-spacing: -.01em;">{{ t.name }}</span>
+              <span style="font-size: 20px; font-weight: 300; color: {{ t.subColor }};">{{ t.sub }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- 공간 드롭다운 -->
+    <sc-if value="{{ spaceOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: 56px; right: 56px; top: 268px; z-index: 30; padding: 26px; border-radius: 32px; background: rgba(14,14,13,.96); border: 1px solid rgba(255,255,255,.16); box-shadow: 0 24px 60px rgba(0,0,0,.65);">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px;">
+          <span style="font-size: 24px; font-weight: 400; letter-spacing: .1em; color: rgba(255,255,255,.5);">공간 이동</span>
+          <span style="font-size: 22px; font-weight: 300; color: rgba(255,255,255,.4);">{{ spaceCount }}</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+          <sc-for list="{{ spaceCards }}" as="s" hint-placeholder-count="15">
+            <button type="button" onClick="{{ s.pick }}" style="display: flex; align-items: center; gap: 10px; height: 88px; padding: 0 18px; border: 1px solid {{ s.border }}; border-radius: 18px; background: {{ s.bg }}; color: #fff; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; text-align: left;">
+              <span style="flex: none; width: 11px; height: 11px; border-radius: 50%; background: {{ s.dot }};"></span>
+              <span style="flex: 1; min-width: 0; font-size: 25px; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ s.name }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- 조작 안내 -->
+    <sc-if value="{{ guideOn }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ onHelpClose }}" style="position: absolute; inset: 0; z-index: 40; background: rgba(10,10,10,.9); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 80px; cursor: pointer;">
+        <div style="display: flex; flex-direction: column; gap: 64px;">
+          <div style="display: flex; align-items: center; gap: 34px;">
+            <svg width="96" height="96" viewBox="0 0 88 88" fill="none"><path d="M30 22a14 14 0 0 1 24 6" stroke="{{ accent }}" stroke-width="3" stroke-linecap="round" /><path d="M54 21v8h-8" stroke="{{ accent }}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path d="M40 42V32a4 4 0 0 1 8 0v18l6-2a5 5 0 0 1 6 5v9a12 12 0 0 1-12 12h-6a12 12 0 0 1-12-12V50a4 4 0 0 1 8 0v-8z" stroke="#fff" stroke-width="3" stroke-linejoin="round" /></svg>
+            <div>
+              <div style="font-size: 40px; font-weight: 500; color: #fff;">둘러보기</div>
+              <div style="font-size: 26px; font-weight: 300; color: rgba(255,255,255,.5); margin-top: 8px;">한 손가락으로 드래그</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 34px;">
+            <svg width="96" height="96" viewBox="0 0 88 88" fill="none"><path d="M30 32 16 18M16 18v10M16 18h10M58 32l14-14M72 18v10M72 18H62" stroke="{{ accent }}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path d="M42 46V32a4 4 0 0 1 8 0v18l6-2a5 5 0 0 1 6 5v9a12 12 0 0 1-12 12h-6a12 12 0 0 1-10.4-6L28 54a4 4 0 0 1 7-4l4 7" stroke="#fff" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" /></svg>
+            <div>
+              <div style="font-size: 40px; font-weight: 500; color: #fff;">확대 · 축소</div>
+              <div style="font-size: 26px; font-weight: 300; color: rgba(255,255,255,.5); margin-top: 8px;">두 손가락으로 오므리기 / 벌리기</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 34px;">
+            <svg width="96" height="96" viewBox="0 0 88 88" fill="none"><path d="M44 6v18M44 6l-6 6M44 6l6 6M26 26H8M8 26l6-6M8 26l6 6M62 26h18M80 26l-6-6M80 26l-6 6" stroke="{{ accent }}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path d="M42 52V38a4 4 0 0 1 8 0v14l5-1.6a5 5 0 0 1 6 5v7a12 12 0 0 1-12 12h-5a12 12 0 0 1-10.4-6L30 60a4 4 0 0 1 7-4l4 7" stroke="#fff" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" /></svg>
+            <div>
+              <div style="font-size: 40px; font-weight: 500; color: #fff;">공간 이동</div>
+              <div style="font-size: 26px; font-weight: 300; color: rgba(255,255,255,.5); margin-top: 8px;">오른쪽 패널의 화살표 또는 공간 메뉴</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size: 26px; font-weight: 300; color: rgba(255,255,255,.45);">화면을 터치하면 닫힙니다</div>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#b08b5e&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#b08b5e&quot;,&quot;#3f6f5f&quot;,&quot;#16357a&quot;,&quot;#8c5a4a&quot;]},&quot;$preview&quot;:{&quot;width&quot;:1085,&quot;height&quot;:1904}}">
+const ROOMS = [
+  { id: 0, name: "현관", group: "진입", pin: [34, 20] },
+  { id: 1, name: "현관 · 복도", group: "진입", pin: [40, 30] },
+  { id: 2, name: "거실", group: "거실 · 주방", pin: [39, 44], yaw: 0.55 },
+  { id: 3, name: "거실 창가", group: "거실 · 주방", pin: [33, 58] },
+  { id: 4, name: "주방 · 다이닝", group: "거실 · 주방", pin: [53, 42] },
+  { id: 5, name: "주방 조리대", group: "거실 · 주방", pin: [52, 26] },
+  { id: 6, name: "안방", group: "안방", pin: [24, 73] },
+  { id: 7, name: "안방 드레스룸", group: "안방", pin: [17, 63] },
+  { id: 8, name: "파우더룸", group: "안방", pin: [16, 45] },
+  { id: 9, name: "부부욕실", group: "안방", pin: [16, 38] },
+  { id: 10, name: "침실 1", group: "침실", pin: [77, 28] },
+  { id: 11, name: "침실 2", group: "침실", pin: [77, 70] },
+  { id: 12, name: "침실 3", group: "침실", pin: [19, 24] },
+  { id: 13, name: "침실 4", group: "침실", pin: [77, 60] },
+  { id: 14, name: "공용욕실", group: "욕실", pin: [77, 51] }
+];
+const TYPES = [
+  { name: "59A", sub: "미건립" }, { name: "59B", sub: "건립" },
+  { name: "59C", sub: "미건립" }, { name: "59D", sub: "미건립" },
+  { name: "84A", sub: "건립" }, { name: "84B", sub: "미건립" },
+  { name: "84C", sub: "미건립" }
+];
+const W = 1085.3, H = 1904.3;
+
+class Component extends DCLogic {
+  state = { i: 2, type: "84A", typeOpen: false, spaceOpen: false, view: "tour", dp: false, auto: false, map: false, guide: false };
+
+  constructor(p) {
+    super(p);
+    this.refs = {};
+    ["fit", "stage"].forEach(k => (this.refs[k] = React.createRef()));
+  }
+
+  get accent() { return this.props.accent ?? "#b08b5e"; }
+  get rooms() { return ROOMS.map(r => ({ ...r, thumb: `pano/t${r.id}.jpg`, src: `pano/${r.id}.jpg` })); }
+
+  componentDidMount() {
+    this.fit();
+    this.ro = new ResizeObserver(() => this.fit());
+    this.refs.fit.current && this.ro.observe(this.refs.fit.current);
+    this.attach(0);
+    this.onKey = e => {
+      if (e.key === "ArrowRight") this.go(this.state.i + 1);
+      if (e.key === "ArrowLeft") this.go(this.state.i - 1);
+    };
+    window.addEventListener("keydown", this.onKey);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.onKey);
+    this.ro && this.ro.disconnect();
+    clearInterval(this._auto);
+  }
+
+  fit() {
+    const box = this.refs.fit.current, st = this.refs.stage.current;
+    if (!box || !st) return;
+    const s = Math.min(box.clientWidth / W, box.clientHeight / H);
+    st.style.transform = `translate(-50%, -50%) scale(${s})`;
+  }
+
+  attach(tries) {
+    const el = document.querySelector("pano-view");
+    if (el && el.gl) { this.pano = el; this.go(this.state.i, false); return; }
+    if (tries < 100) setTimeout(() => this.attach(tries + 1), 60);
+  }
+
+  go(n, fade = true) {
+    const i = (n + ROOMS.length) % ROOMS.length;
+    const list = this.rooms;
+    if (this.pano) {
+      this.pano.setSrc(list[i].src, fade);
+      this.pano.setView(ROOMS[i].yaw ?? 0.5, 0.12);
+      this.pano.fov = 1.55;
+    }
+    this.setState({ i, spaceOpen: false, typeOpen: false });
+    [1, -1].forEach(d => { const im = new Image(); im.src = list[(i + d + ROOMS.length) % ROOMS.length].src; });
+  }
+
+  toggleAuto() {
+    clearInterval(this._auto);
+    const on = !this.state.auto;
+    if (on) this._auto = setInterval(() => this.go(this.state.i + 1), 6000);
+    this.setState({ auto: on });
+  }
+
+  renderVals() {
+    const s = this.state, r = ROOMS[s.i], a = this.accent;
+    const dim = "rgba(255,255,255,.72)";
+    const chip = (k, on) => ({
+      [k + "Bg"]: on ? a : "rgba(255,255,255,.05)",
+      [k + "Border"]: on ? a : "rgba(255,255,255,.16)",
+      [k + "Color"]: on ? "#fff" : dim
+    });
+    return {
+      accent: a,
+      panoProps: { src: this.rooms[2].src, style: { position: "absolute", inset: 0, width: "100%", height: "100%", filter: "contrast(1.1) saturate(1.06) brightness(.97)" } },
+      fitRef: this.refs.fit,
+      stageRef: this.refs.stage,
+      type: s.type,
+      space: r.name,
+      spaceCount: ROOMS.length + "곳",
+      typeOpen: s.typeOpen,
+      spaceOpen: s.spaceOpen,
+      typeBtnBg: s.typeOpen ? a : "rgba(255,255,255,.07)",
+      spaceBtnBg: s.spaceOpen ? a : "rgba(255,255,255,.07)",
+      onToggleType: () => this.setState(p => ({ typeOpen: !p.typeOpen, spaceOpen: false })),
+      onToggleSpace: () => this.setState(p => ({ spaceOpen: !p.spaceOpen, typeOpen: false })),
+      typeCards: TYPES.map(t => ({
+        name: t.name, sub: t.sub,
+        bg: t.name === s.type ? a : "rgba(255,255,255,.05)",
+        border: t.name === s.type ? a : "rgba(255,255,255,.14)",
+        subColor: t.name === s.type ? "rgba(255,255,255,.75)" : "rgba(255,255,255,.4)",
+        pick: () => this.setState({ type: t.name, typeOpen: false })
+      })),
+      spaceCards: ROOMS.map((x, n) => ({
+        name: x.name,
+        bg: n === s.i ? a : "rgba(255,255,255,.05)",
+        border: n === s.i ? a : "rgba(255,255,255,.14)",
+        dot: n === s.i ? "#fff" : "rgba(255,255,255,.3)",
+        pick: () => this.go(n)
+      })),
+      pinLeft: r.pin[0] + "%",
+      pinTop: r.pin[1] + "%",
+      hint: s.view === "plan" ? "평면도에서 구조를 확인해보세요"
+        : s.view === "iso" ? "입체 평면에서 구조를 확인해보세요"
+        : s.dp ? "DP 시안이 적용된 화면입니다"
+        : "화면을 손으로 움직여보세요",
+      tourView: s.view === "tour",
+      planOn: s.view === "plan",
+      isoOn: s.view === "iso",
+      dpOn: s.dp && s.view === "tour",
+      guideOn: s.guide,
+      onHelp: () => this.setState({ guide: true }),
+      onHelpClose: () => this.setState({ guide: false }),
+      ...chip("plan", s.view === "plan"),
+      ...chip("iso", s.view === "iso"),
+      ...chip("dp", s.dp),
+      ...chip("auto", s.auto),
+      dpLabel: s.dp ? "DP 끄기" : "DP 켜기",
+      autoLabel: s.auto ? "투어 정지" : "자동투어",
+      onPlan: () => this.setState(p => ({ view: p.view === "plan" ? "tour" : "plan" })),
+      onIso: () => this.setState(p => ({ view: p.view === "iso" ? "tour" : "iso" })),
+      onDp: () => this.setState(p => ({ dp: !p.dp })),
+      onAuto: () => this.toggleAuto(),
+      onPrev: () => this.go(s.i - 1),
+      onNext: () => this.go(s.i + 1)
+    };
+  }
+}
+</script>
+</body>
+</html>
